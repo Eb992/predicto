@@ -1,0 +1,81 @@
+# Configurazione mercati di scommessa
+
+markets:
+  match_result:
+    name:  "1X2"
+    description: "Risultato finale"
+    outcomes: ["H", "D", "A"]
+    min_accuracy_target: 0.55
+    typical_odds_range: [1.10, 15.0]
+    
+  exact_score:
+    name: "Correct Score"
+    description: "Risultato esatto"
+    common_scores: 
+      - "1-0"
+      - "0-0"
+      - "1-1"
+      - "2-1"
+      - "2-0"
+      - "0-1"
+      - "1-2"
+      - "0-2"
+      - "2-2"
+      - "3-1"
+      - "3-0"
+      - "3-2"
+    min_accuracy_target: 0.12
+    typical_odds_range: [5.0, 100.0]
+    predictions_per_match: 2
+    
+  btts:
+    name: "Both Teams To Score"
+    description:  "Entrambe segnano"
+    outcomes:  ["Yes", "No"]
+    min_accuracy_target: 0.58
+    typical_odds_range: [1.50, 2.50]
+    
+  over_under:
+    name:  "Over/Under Goals"
+    description:  "Totale gol"
+    lines:
+      - 0. 5
+      - 1.5
+      - 2.5
+      - 3.5
+      - 4.5
+    default_line: 2.5
+    min_accuracy_target:  0.58
+    typical_odds_range: [1.40, 3.00]
+    
+  double_chance:
+    name:  "Double Chance"
+    description: "Doppia chance"
+    outcomes: ["1X", "X2", "12"]
+    min_accuracy_target: 0.70
+    typical_odds_range: [1.10, 2.00]
+
+# Player props
+player_props: 
+  shots_on_target: 
+    name: "Tiri in porta"
+    lines: [0.5, 1.5, 2.5]
+    stat_column: "shots_on_target"
+    
+  fouls_committed:
+    name:  "Falli commessi"
+    lines: [0.5, 1.5, 2.5]
+    stat_column: "fouls_committed"
+    
+  cards:
+    name:  "Cartellini"
+    lines:  [0.5]
+    stat_column: "yellow_cards"
+
+# Kelly criterion settings
+kelly: 
+  default_fraction: 0.25
+  aggressive_fraction: 0.50
+  conservative_fraction: 0.10
+  max_stake_pct: 0.05
+  min_edge:  0.05

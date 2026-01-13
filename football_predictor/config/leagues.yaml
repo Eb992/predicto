@@ -1,0 +1,54 @@
+# Configurazione leghe supportate
+
+leagues:
+  premier_league:
+    name: "ENG-Premier League"
+    country: "England"
+    fbref_id: "ENG-Premier League"
+    understat_id: "EPL"
+    sofifa_id: 13
+    teams:  20
+    season_format: "multi_year"  # e.g., 2023-24
+    
+  serie_a:
+    name: "ITA-Serie A"
+    country: "Italy"
+    fbref_id: "ITA-Serie A"
+    understat_id: "Serie A"
+    sofifa_id: 31
+    teams: 20
+    season_format: "multi_year"
+    
+  la_liga:
+    name: "ESP-La Liga"
+    country: "Spain"
+    fbref_id: "ESP-La Liga"
+    understat_id: "La liga"
+    sofifa_id: 53
+    teams: 20
+    season_format: "multi_year"
+    
+  bundesliga:
+    name: "GER-Bundesliga"
+    country:  "Germany"
+    fbref_id:  "GER-Bundesliga"
+    understat_id:  "Bundesliga"
+    sofifa_id: 19
+    teams: 18
+    season_format: "multi_year"
+    
+  ligue_1:
+    name:  "FRA-Ligue 1"
+    country: "France"
+    fbref_id: "FRA-Ligue 1"
+    understat_id: "Ligue 1"
+    sofifa_id:  16
+    teams: 18
+    season_format: "multi_year"
+
+# Mercati secondari
+secondary_markets:
+  - eredivisie
+  - primeira_liga
+  - championship
+  - serie_b
