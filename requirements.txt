@@ -1,0 +1,42 @@
+# Core
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+scipy>=1.11.0
+
+# Data scraping
+soccerdata>=1.8.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+selenium>=4.15.0
+lxml>=4.9.0
+
+# CLI & UI
+click>=8.1.0
+rich>=13.6.0
+tqdm>=4.66.0
+
+# Serialization
+joblib>=1.3.0
+cloudpickle>=3.0.0
+pyyaml>=6.0.0
+
+# Visualization (optional)
+matplotlib>=3.8.0
+plotly>=5.18.0
+
+# Excel export
+openpyxl>=3.1.0
+xlsxwriter>=3.1.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Type checking
+mypy>=1.6.0
+
+# Code quality
+black>=23.10.0
+isort>=5.12.0
+flake8>=6.1.0
