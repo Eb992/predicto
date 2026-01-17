@@ -19,7 +19,7 @@ class BaseScraper(ABC):
     """Classe base per tutti gli scraper."""
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper.
@@ -57,7 +57,7 @@ class FBrefScraper(BaseScraper):
     """Scraper per FBref utilizzando soccerdata con Tor."""
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper FBref.
@@ -192,7 +192,7 @@ class UnderstatScraper(BaseScraper):
     }
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper Understat.
@@ -266,7 +266,7 @@ class MatchHistoryScraper(BaseScraper):
     """Scraper per Football-Data. co.uk (quote storiche) con Tor."""
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper MatchHistory.
@@ -373,7 +373,7 @@ class WhoScoredScraper(BaseScraper):
         self,
         leagues: List[str],
         seasons: List[int],
-        use_tor: bool = True,
+        use_tor: bool,
         tor_port: int = 9150,
         headless: bool = True,
         path_to_browser: Optional[str] = None,
@@ -451,7 +451,7 @@ class FotMobScraper(BaseScraper):
     """Scraper per FotMob con Tor."""
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper FotMob.
@@ -519,7 +519,7 @@ class SofascoreScraper(BaseScraper):
     """Scraper per Sofascore con Tor."""
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper Sofascore.
@@ -564,7 +564,7 @@ def create_scraper(
     source: str,
     leagues: List[str],
     seasons: List[int],
-    use_tor: bool = True,
+    use_tor: bool,
     tor_port: int = 9150,
     **kwargs,
 ) -> BaseScraper:

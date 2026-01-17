@@ -69,8 +69,18 @@ def backtest(ctx, start_date, end_date, bankroll, kelly_fraction, leagues, outpu
 
         # Scarica dati
         try:
-            fbref_scraper = FBrefScraper(leagues_list, config.data.seasons)
-            odds_scraper = MatchHistoryScraper(leagues_list, config.data.seasons)
+            fbref_scraper = FBrefScraper(
+                leagues_list,
+                config.data.seasons,
+                use_tor=config.tor.enabled,
+                tor_port=config.tor.port,
+            )
+            odds_scraper = MatchHistoryScraper(
+                leagues_list,
+                config.data.seasons,
+                use_tor=config.tor.enabled,
+                tor_port=config.tor.port,
+            )
 
             progress.update(task, advance=20, description="[cyan]Scaricando calendario...")
             schedule = fbref_scraper.fetch_schedule()
@@ -167,7 +177,12 @@ def predict(ctx, days, leagues, markets, min_probability, output):
         task = progress.add_task("[cyan]Caricamento dati...", total=100)
 
         # Scarica dati storici per training
-        fbref_scraper = FBrefScraper(leagues_list, config.data.seasons)
+        fbref_scraper = FBrefScraper(
+            leagues_list,
+            config.data.seasons,
+            use_tor=config.tor.enabled,
+            tor_port=config.tor.port,
+        )
 
         progress.update(task, advance=30, description="[cyan]Scaricando dati storici...")
         historical_data = fbref_scraper.fetch_schedule()

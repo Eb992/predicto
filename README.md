@@ -56,7 +56,7 @@ pip install -e .
 
 ```bash
 # Backtesting
-football-predictor backtest --bankroll 1000 --leagues "ENG-Premier League" "ITA-Serie A"
+football-predictor backtest --bankroll 1000 --leagues "ENG-Premier League" --leagues "ITA-Serie A"
 
 # Predizioni future (7 giorni)
 football-predictor predict --days 7 --markets all --min-probability 0.55
