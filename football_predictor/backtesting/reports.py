@@ -1,27 +1,28 @@
 """Generazione report di backtesting."""
 
-import pandas as pd
-import numpy as np
+import json
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
-from datetime import datetime
-import json
+
+import numpy as np
+import pandas as pd
 
 from .metrics import PerformanceMetrics, calculate_all_metrics
 
 
-class BacktestReport: 
+class BacktestReport:
     """Genera report dettagliati del backtesting."""
-    
-    def __init__(self, results, bets:  List[Dict], config: Dict = None):
+
+    def __init__(self, results, bets: List[Dict], config: Dict = None):
         self.results = results
         self.bets = bets
         self.config = config or {}
-    
+
     def generate_summary(self) -> str:
         """Genera un riepilogo testuale."""
         r = self.results
-        
+
         summary = f"""
 ╔══════════════════════════════════════════════════════════════╗
 ║                    BACKTEST REPORT                           ║
@@ -53,15 +54,15 @@ class BacktestReport:
         for model, acc in r.model_accuracies.items():
             status = "✓" if acc >= 0.60 else "✗"
             summary += f"║  {model: 25} {acc:.2%} {status}\n"
-        
+
         summary += """╚══════════════════════════════════════════════════════════════╝
 """
         return summary
-    
+
     def generate_html_report(self, output_path: str):
         """Genera un report HTML completo."""
         r = self.results
-        
+
         html = f"""
 <!DOCTYPE html>
 <html>
@@ -172,80 +173,93 @@ class BacktestReport:
 </body>
 </html>
 """
-        
-        with open(output_path, 'w') as f:
+
+        with open(output_path, "w") as f:
             f.write(html)
-    
+
     def export_to_excel(self, output_path: str):
         """Esporta i dati in Excel con multiple sheets."""
-        with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
+        with pd.ExcelWriter(output_path, engine="openpyxl") as writer:
             # Summary
             summary_data = {
-                'Metrica': ['Bankroll Iniziale', 'Bankroll Finale', 'Profitto', 'ROI',
-                           'Totale Scommesse', 'Vinte', 'Perse', 'Win Rate',
-                           'Max Drawdown', 'Sharpe Ratio'],
-                'Valore': [
+                "Metrica": [
+                    "Bankroll Iniziale",
+                    "Bankroll Finale",
+                    "Profitto",
+                    "ROI",
+                    "Totale Scommesse",
+                    "Vinte",
+                    "Perse",
+                    "Win Rate",
+                    "Max Drawdown",
+                    "Sharpe Ratio",
+                ],
+                "Valore": [
                     f"€{self.results.initial_bankroll:,.2f}",
                     f"€{self. results.final_bankroll:,.2f}",
                     f"€{self.results.total_profit:+,.2f}",
                     f"{self.results.roi:. 2%}",
                     self.results.total_bets,
-                    self.results. wins,
+                    self.results.wins,
                     self.results.losses,
                     f"{self.results. win_rate:.2%}",
                     f"{self. results.max_drawdown:.2%}",
-                    f"{self.results. sharpe_ratio:. 2f}"
-                ]
+                    f"{self.results. sharpe_ratio:. 2f}",
+                ],
             }
-            pd.DataFrame(summary_data).to_excel(writer, sheet_name='Summary', index=False)
-            
+            pd.DataFrame(summary_data).to_excel(writer, sheet_name="Summary", index=False)
+
             # Bets
             if self.bets:
-                pd.DataFrame(self. bets).to_excel(writer, sheet_name='Bets', index=False)
-            
+                pd.DataFrame(self.bets).to_excel(writer, sheet_name="Bets", index=False)
+
             # Equity Curve
-            equity_df = pd.DataFrame({
-                'Period': range(len(self. results.bankroll_history)),
-                'Bankroll': self.results. bankroll_history
-            })
-            equity_df.to_excel(writer, sheet_name='Equity', index=False)
-            
+            equity_df = pd.DataFrame(
+                {
+                    "Period": range(len(self.results.bankroll_history)),
+                    "Bankroll": self.results.bankroll_history,
+                }
+            )
+            equity_df.to_excel(writer, sheet_name="Equity", index=False)
+
             # Model Accuracy
-            acc_df = pd. DataFrame([
-                {'Model': k, 'Accuracy': v, 'Above Threshold': v >= 0.60}
-                for k, v in self. results.model_accuracies.items()
-            ])
-            acc_df.to_excel(writer, sheet_name='Models', index=False)
-    
+            acc_df = pd.DataFrame(
+                [
+                    {"Model": k, "Accuracy": v, "Above Threshold": v >= 0.60}
+                    for k, v in self.results.model_accuracies.items()
+                ]
+            )
+            acc_df.to_excel(writer, sheet_name="Models", index=False)
+
     def save_json(self, output_path: str):
         """Salva il report in formato JSON."""
         data = {
-            'generated_at': datetime. now().isoformat(),
-            'config': self.config,
-            'results':  {
-                'period': {
-                    'start': str(self.results. start_date),
-                    'end':  str(self.results.end_date)
+            "generated_at": datetime.now().isoformat(),
+            "config": self.config,
+            "results": {
+                "period": {
+                    "start": str(self.results.start_date),
+                    "end": str(self.results.end_date),
                 },
-                'performance': {
-                    'initial_bankroll': self.results.initial_bankroll,
-                    'final_bankroll': self.results.final_bankroll,
-                    'total_profit': self.results.total_profit,
-                    'roi': self. results.roi
+                "performance": {
+                    "initial_bankroll": self.results.initial_bankroll,
+                    "final_bankroll": self.results.final_bankroll,
+                    "total_profit": self.results.total_profit,
+                    "roi": self.results.roi,
                 },
-                'bets': {
-                    'total':  self.results.total_bets,
-                    'wins':  self.results.wins,
-                    'losses': self.results.losses,
-                    'win_rate': self. results.win_rate
+                "bets": {
+                    "total": self.results.total_bets,
+                    "wins": self.results.wins,
+                    "losses": self.results.losses,
+                    "win_rate": self.results.win_rate,
                 },
-                'risk': {
-                    'max_drawdown': self.results. max_drawdown,
-                    'sharpe_ratio': self.results.sharpe_ratio
+                "risk": {
+                    "max_drawdown": self.results.max_drawdown,
+                    "sharpe_ratio": self.results.sharpe_ratio,
                 },
-                'models': self.results.model_accuracies
-            }
+                "models": self.results.model_accuracies,
+            },
         }
-        
-        with open(output_path, 'w') as f:
+
+        with open(output_path, "w") as f:
             json.dump(data, f, indent=2, default=str)

@@ -1,8 +1,8 @@
 """Modulo per gestione betting e bankroll."""
 
-from . kelly_criterion import KellyCriterion, BankrollManager, Bet
-from .value_bet_finder import ValueBetFinder, ValueBet
-from .bet_tracker import BetTracker, BetRecord
+from .bet_tracker import BetRecord, BetTracker
+from .kelly_criterion import BankrollManager, Bet, KellyCriterion
+from .value_bet_finder import ValueBet, ValueBetFinder
 
 __all__ = [
     "KellyCriterion",
@@ -11,5 +11,5 @@ __all__ = [
     "ValueBetFinder",
     "ValueBet",
     "BetTracker",
-    "BetRecord"
+    "BetRecord",
 ]

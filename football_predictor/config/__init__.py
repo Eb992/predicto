@@ -1,5 +1,5 @@
 """Modulo configurazione."""
 
-from .settings import Config, ModelConfig, BettingConfig, DataConfig
+from .settings import BettingConfig, Config, DataConfig, ModelConfig
 
 __all__ = ["Config", "ModelConfig", "BettingConfig", "DataConfig"]
