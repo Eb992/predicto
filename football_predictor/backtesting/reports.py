@@ -33,19 +33,19 @@ class BacktestReport:
 ║  ───────────────────────────────────────────────────────────
 ║  Bankroll Iniziale:     €{r.initial_bankroll:,.2f}
 ║  Bankroll Finale:      €{r.final_bankroll:,.2f}
-║  Profitto/Perdita:     €{r.total_profit:+,. 2f}
+║  Profitto/Perdita:     €{r.total_profit:+,.2f}
 ║  ROI:                  {r.roi:+.2%}
 ║  
 ║  SCOMMESSE
 ║  ───────────────────────────────────────────────────────────
 ║  Totale Scommesse:      {r.total_bets}
-║  Vinte:                {r. wins}
-║  Perse:                {r. losses}
-║  Win Rate:             {r.win_rate:. 2%}
+║  Vinte:                {r.wins}
+║  Perse:                {r.losses}
+║  Win Rate:             {r.win_rate:.2%}
 ║  
 ║  RISCHIO
 ║  ───────────────────────────────────────────────────────────
-║  Max Drawdown:         {r.max_drawdown:. 2%}
+║  Max Drawdown:         {r.max_drawdown:.2%}
 ║  Sharpe Ratio:         {r.sharpe_ratio:.2f}
 ║  
 ║  ACCURACY MODELLI
@@ -104,7 +104,7 @@ class BacktestReport:
                 <div class="metric-label">ROI</div>
             </div>
             <div class="metric-card">
-                <div class="metric-value">{r. win_rate:.1%}</div>
+                <div class="metric-value">{r.win_rate:.1%}</div>
                 <div class="metric-label">Win Rate</div>
             </div>
             <div class="metric-card">
@@ -141,10 +141,10 @@ class BacktestReport:
                 <th>Soglia (60%)</th>
                 <th>Status</th>
             </tr>
-            {"". join(f'''
+            {"".join(f'''
             <tr>
                 <td>{model}</td>
-                <td>{acc:. 2%}</td>
+                <td>{acc:.2%}</td>
                 <td>60%</td>
                 <td class="{'status-ok' if acc >= 0.60 else 'status-warning'}">{'✓ OK' if acc >= 0.60 else '✗ Sotto soglia'}</td>
             </tr>
@@ -155,12 +155,12 @@ class BacktestReport:
         <div class="chart" id="equity-chart">
             <!-- In produzione, usare una libreria come Chart. js o Plotly -->
             <p style="text-align:  center; padding-top: 130px; color: #888;">
-                Bankroll: €{r.initial_bankroll:,.2f} → €{r.final_bankroll:,. 2f}
+                Bankroll: €{r.initial_bankroll:,.2f} → €{r.final_bankroll:,.2f}
             </p>
         </div>
         
         <h2>📈 Rendimenti Giornalieri</h2>
-        <p>Media: {np.mean(r. daily_returns) if r.daily_returns else 0:. 4%} | 
+        <p>Media: {np.mean(r.daily_returns) if r.daily_returns else 0:.4%} |
            Std Dev: {np.std(r.daily_returns) if r.daily_returns else 0:.4%} |
            Giorni Positivi: {sum(1 for d in r.daily_returns if d > 0)}/{len(r.daily_returns)}</p>
         
@@ -196,15 +196,15 @@ class BacktestReport:
                 ],
                 "Valore": [
                     f"€{self.results.initial_bankroll:,.2f}",
-                    f"€{self. results.final_bankroll:,.2f}",
+                    f"€{self.results.final_bankroll:,.2f}",
                     f"€{self.results.total_profit:+,.2f}",
-                    f"{self.results.roi:. 2%}",
+                    f"{self.results.roi:.2%}",
                     self.results.total_bets,
                     self.results.wins,
                     self.results.losses,
-                    f"{self.results. win_rate:.2%}",
-                    f"{self. results.max_drawdown:.2%}",
-                    f"{self.results. sharpe_ratio:. 2f}",
+                    f"{self.results.win_rate:.2%}",
+                    f"{self.results.max_drawdown:.2%}",
+                    f"{self.results.sharpe_ratio:.2f}",
                 ],
             }
             pd.DataFrame(summary_data).to_excel(writer, sheet_name="Summary", index=False)
