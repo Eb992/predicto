@@ -54,7 +54,7 @@ Homepage = "https://github.com/yourusername/football-predictor"
 Documentation = "https://github.com/yourusername/football-predictor#readme"
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["src"]
 include = ["football_predictor*"]
 
 [tool.black]
