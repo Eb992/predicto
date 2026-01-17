@@ -2,7 +2,7 @@
 
 import numpy as np
 import pandas as pd
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 from sklearn.ensemble import (
     RandomForestClassifier,
     GradientBoostingClassifier,

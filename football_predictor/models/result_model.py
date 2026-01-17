@@ -66,7 +66,6 @@ class ResultModel(BasePredictionModel):
                     C=1.0,
                     max_iter=1000,
                     solver='lbfgs',
-                    multi_class='multinomial',
                     random_state=self.random_state,
                     class_weight='balanced'
                 ))

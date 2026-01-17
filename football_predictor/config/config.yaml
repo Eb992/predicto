@@ -1,0 +1,30 @@
+model:
+  random_state: 42
+  test_size: 0.2
+  cv_folds: 5
+  min_accuracy_threshold: 0.60
+betting:
+  initial_bankroll: 1000.0
+  kelly_fraction: 0.25
+  max_stake_pct: 0.05
+  min_edge: 0.05
+  stop_loss_pct: 0.50
+  profit_target_pct: 1.00
+data:
+  cache_dir: data/cache
+  leagues:
+    - "ENG-Premier League"
+    - "ITA-Serie A"
+    - "ESP-La Liga"
+    - "GER-Bundesliga"
+    - "FRA-Ligue 1"
+  seasons:
+    - 2022
+    - 2023
+    - 2024
+    - 2025
+  lookback_games: 10
+tor:
+  enabled: true
+  port: 9150
+  host: "127.0.0.1"

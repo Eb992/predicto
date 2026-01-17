@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68. 0", "wheel"]
+requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -47,7 +47,7 @@ viz = [
 ]
 
 [project.scripts]
-football-predictor = "football_predictor. cli. main:main"
+football-predictor = "football_predictor.cli.main:main"
 
 [project.urls]
 Homepage = "https://github.com/yourusername/football-predictor"
