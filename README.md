@@ -37,11 +37,17 @@ cd football-predictor
 
 # Crea ambiente virtuale
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate  # Windows
 
-# Installa dipendenze
-pip install -e . 
+# Attiva l'ambiente virtuale
+# Windows (CMD)
+venv\Scripts\activate
+# Linux/Mac
+# source venv/bin/activate
+
+# Installa dipendenze (passaggio obbligatorio)
+# Il comando seguente installa il pacchetto in modalità "editable"
+# in modo che il comando `football-predictor` sia disponibile.
+pip install -e .
 ```
 
 ## 🚀 Utilizzo
@@ -96,8 +102,8 @@ backtester = Backtester(initial_bankroll=1000)
 backtester. add_model('1X2', model_1x2)
 backtester.add_model('BTTS', model_btts)
 
-results = backtester. run_backtest(data, odds_data)
-print(f"ROI: {results. roi:. 2%}")
+results = backtester.run_backtest(data, odds_data)
+print(f"ROI: {results.roi:.2%}")
 print(f"Win Rate: {results.win_rate:.2%}")
 ```
 
