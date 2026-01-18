@@ -50,7 +50,7 @@ class H2HFeatureExtractor:
             
             if hg > 0 and ag > 0:
                 btts_count += 1
-            if hg + ag > 2. 5:
+            if hg + ag > 2.5:
                 over_2_5_count += 1
         
         n = len(h2h_matches)
@@ -80,7 +80,7 @@ class H2HFeatureExtractor:
         if len(venue_matches) == 0:
             return {
                 'venue_h2h_matches': 0,
-                'venue_home_win_rate': 0. 45,
+                'venue_home_win_rate': 0.45,
                 'venue_away_win_rate': 0.30,
                 'venue_draw_rate': 0.25
             }

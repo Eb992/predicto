@@ -76,7 +76,7 @@ class Config:
     tor: TorConfig = field(default_factory=TorConfig)
 
     @classmethod
-    def load(cls, path: str = "config/config. yaml") -> "Config":
+    def load(cls, path: str = "config/config.yaml") -> "Config":
         """Carica configurazione da file YAML."""
         config_path = Path(path)
 

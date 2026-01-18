@@ -61,7 +61,7 @@ class RestDaysCalculator:
         
         if len(team_matches) == 0:
             return {
-                'fatigue_score': 0. 0,
+                'fatigue_score': 0.0,
                 'matches_in_window': 0,
                 'avg_rest_in_window': 7.0,
                 'rest_days_last_match': 7
@@ -85,7 +85,7 @@ class RestDaysCalculator:
         
         # Score di fatica (più alto = più stanco)
         # Formula: più partite e meno riposo = più fatica
-        base_fatigue = n_matches / (window_days / 3. 5)  # Normalizza su ~4 partite in 2 settimane
+        base_fatigue = n_matches / (window_days / 3.5)  # Normalizza su ~4 partite in 2 settimane
         rest_factor = max(0, (4 - avg_rest) / 4)  # Penalizza se media < 4 giorni
         
         fatigue_score = min(1.0, base_fatigue * (1 + rest_factor * 0.5))
