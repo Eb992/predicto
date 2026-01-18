@@ -33,6 +33,7 @@ Questo software usa Tor per rendere anonime le richieste a siti di terze parti p
 
 Per l'affidabilità dello scraping, è fondamentale assicurarsi che Tor Browser sia in esecuzione prima di lanciare i comandi. Il programma è configurato per usare la porta 9150, che è quella predefinita del Tor Browser. Se si usa un'altra porta, è necessario modificare il file `football_predictor/config/config.yaml`.
 
+
 ## 📦 Installazione
 
 ```bash

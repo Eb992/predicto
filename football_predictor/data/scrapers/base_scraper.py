@@ -40,7 +40,7 @@ class BaseScraper(ABC):
 
         # Configura proxy
         if use_tor:
-            self.proxy = f"socks5://127.0.0.1:{tor_port}"
+            self.proxy = "tor"
             logger.info(f"Usando Tor proxy su porta {tor_port}")
         else:
             self.proxy = None
