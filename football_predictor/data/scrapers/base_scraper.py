@@ -40,7 +40,7 @@ class BaseScraper(ABC):
 
         # Configura proxy
         if use_tor:
-            self.proxy = f"socks5://127.0.0.1:{tor_port}"
+            self.proxy = "tor"
             logger.info(f"Usando Tor proxy su porta {tor_port}")
         else:
             self.proxy = None
@@ -76,9 +76,12 @@ class FBrefScraper(BaseScraper):
         for league in leagues:
             try:
                 # FBref usa requests, quindi passiamo il proxy
-                self.scrapers[league] = sd.FBref(
+                scraper = sd.FBref(
                     leagues=league, seasons=seasons, proxy=self.proxy
                 )
+                scraper.rate_limit = self.rate_limit
+                scraper.max_delay = self.max_delay
+                self.scrapers[league] = scraper
                 logger.info(f"Inizializzato FBref scraper per {league}")
             except Exception as e:
                 logger.warning(f"Errore inizializzazione FBref per {league}: {e}")
@@ -211,11 +214,14 @@ class UnderstatScraper(BaseScraper):
         for league in leagues:
             if league in self.LEAGUE_MAPPING:
                 try:
-                    self.scrapers[league] = sd.Understat(
+                    scraper = sd.Understat(
                         leagues=self.LEAGUE_MAPPING[league],
                         seasons=seasons,
                         proxy=self.proxy,
                     )
+                    scraper.rate_limit = self.rate_limit
+                    scraper.max_delay = self.max_delay
+                    self.scrapers[league] = scraper
                     logger.info(f"Inizializzato Understat scraper per {league}")
                 except Exception as e:
                     logger.warning(f"Errore inizializzazione Understat per {league}: {e}")
@@ -284,9 +290,12 @@ class MatchHistoryScraper(BaseScraper):
         self.scrapers = {}
         for league in leagues:
             try:
-                self.scrapers[league] = sd.MatchHistory(
+                scraper = sd.MatchHistory(
                     leagues=league, seasons=seasons, proxy=self.proxy
                 )
+                scraper.rate_limit = self.rate_limit
+                scraper.max_delay = self.max_delay
+                self.scrapers[league] = scraper
                 logger.info(f"Inizializzato MatchHistory scraper per {league}")
             except Exception as e:
                 logger.warning(f"MatchHistory non disponibile per {league}:  {e}")
@@ -400,13 +409,16 @@ class WhoScoredScraper(BaseScraper):
         for league in leagues:
             try:
                 # WhoScored richiede Selenium
-                self.scrapers[league] = sd.WhoScored(
+                scraper = sd.WhoScored(
                     leagues=league,
                     seasons=seasons,
                     proxy=self.proxy,
                     headless=headless,
                     path_to_browser=path_to_browser,
                 )
+                scraper.rate_limit = self.rate_limit
+                scraper.max_delay = self.max_delay
+                self.scrapers[league] = scraper
                 logger.info(f"Inizializzato WhoScored scraper per {league}")
             except Exception as e:
                 logger.warning(f"Errore inizializzazione WhoScored per {league}: {e}")
@@ -469,9 +481,12 @@ class FotMobScraper(BaseScraper):
         self.scrapers = {}
         for league in leagues:
             try:
-                self.scrapers[league] = sd.FotMob(
+                scraper = sd.FotMob(
                     leagues=league, seasons=seasons, proxy=self.proxy
                 )
+                scraper.rate_limit = self.rate_limit
+                scraper.max_delay = self.max_delay
+                self.scrapers[league] = scraper
                 logger.info(f"Inizializzato FotMob scraper per {league}")
             except Exception as e:
                 logger.warning(f"Errore inizializzazione FotMob per {league}: {e}")
@@ -537,9 +552,12 @@ class SofascoreScraper(BaseScraper):
         self.scrapers = {}
         for league in leagues:
             try:
-                self.scrapers[league] = sd.Sofascore(
+                scraper = sd.Sofascore(
                     leagues=league, seasons=seasons, proxy=self.proxy
                 )
+                scraper.rate_limit = self.rate_limit
+                scraper.max_delay = self.max_delay
+                self.scrapers[league] = scraper
                 logger.info(f"Inizializzato Sofascore scraper per {league}")
             except Exception as e:
                 logger.warning(f"Errore inizializzazione Sofascore per {league}:  {e}")
