@@ -28,6 +28,11 @@ Sistema predittivo per scommesse calcistiche basato su Machine Learning, con ges
   - Metriche complete (Sharpe, Drawdown, ROI)
   - Report HTML/Excel
 
+## scraping
+Questo software usa Tor per rendere anonime le richieste a siti di terze parti per lo scraping dei dati. Si consiglia di scaricare e installare [Tor Browser](https://www.torproject.org/download/) ed eseguirlo in background per evitare il blocco dell'IP.
+
+Per l'affidabilità dello scraping, è fondamentale assicurarsi che Tor Browser sia in esecuzione prima di lanciare i comandi.
+
 ## 📦 Installazione
 
 ```bash

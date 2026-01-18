@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 class SoFIFAScraper:
     """Scraper per dati SoFIFA (rating FIFA dei giocatori)."""
 
-    def __init__(self, leagues: List[str], seasons: List[int]):
+    def __init__(self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150):
         """
         Inizializza lo scraper SoFIFA.
 
@@ -28,6 +28,13 @@ class SoFIFAScraper:
         self.leagues = leagues
         self.seasons = seasons
         self._cache = {}
+        self.use_tor = use_tor
+        self.tor_port = tor_port
+
+        if use_tor:
+            self.proxy = f"socks5://127.0.0.1:{tor_port}"
+        else:
+            self.proxy = None
 
         # Mapping leghe -> ID SoFIFA
         self.league_mapping = {
@@ -45,7 +52,7 @@ class SoFIFAScraper:
         for league in leagues:
             if league in self.league_mapping and sd is not None:
                 try:
-                    self.scrapers[league] = sd.SoFIFA(league, seasons)
+                    self.scrapers[league] = sd.SoFIFA(league, seasons, proxy=self.proxy)
                 except Exception as e:
                     logger. warning(f"Impossibile inizializzare SoFIFA per {league}: {e}")
 
