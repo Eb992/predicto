@@ -28,6 +28,11 @@ Sistema predittivo per scommesse calcistiche basato su Machine Learning, con ges
   - Metriche complete (Sharpe, Drawdown, ROI)
   - Report HTML/Excel
 
+## scraping
+Questo software usa Tor per rendere anonime le richieste a siti di terze parti per lo scraping dei dati. Si consiglia di scaricare e installare [Tor Browser](https://www.torproject.org/download/) ed eseguirlo in background per evitare il blocco dell'IP.
+
+Per l'affidabilità dello scraping, è fondamentale assicurarsi che Tor Browser sia in esecuzione prima di lanciare i comandi. Il programma è configurato per usare la porta 9150, che è quella predefinita del Tor Browser. Se si usa un'altra porta, è necessario modificare il file `football_predictor/config/config.yaml`.
+
 ## 📦 Installazione
 
 ```bash
@@ -37,11 +42,17 @@ cd football-predictor
 
 # Crea ambiente virtuale
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate  # Windows
 
-# Installa dipendenze
-pip install -e . 
+# Attiva l'ambiente virtuale
+# Windows (CMD)
+venv\Scripts\activate
+# Linux/Mac
+# source venv/bin/activate
+
+# Installa dipendenze (passaggio obbligatorio)
+# Il comando seguente installa il pacchetto in modalità "editable"
+# in modo che il comando `football-predictor` sia disponibile.
+pip install -e .
 ```
 
 ## 🚀 Utilizzo
@@ -50,7 +61,7 @@ pip install -e .
 
 ```bash
 # Backtesting
-football-predictor backtest --bankroll 1000 --leagues "ENG-Premier League" "ITA-Serie A"
+football-predictor backtest --bankroll 1000 --leagues "ENG-Premier League" --leagues "ITA-Serie A"
 
 # Predizioni future (7 giorni)
 football-predictor predict --days 7 --markets all --min-probability 0.55
@@ -96,8 +107,8 @@ backtester = Backtester(initial_bankroll=1000)
 backtester. add_model('1X2', model_1x2)
 backtester.add_model('BTTS', model_btts)
 
-results = backtester. run_backtest(data, odds_data)
-print(f"ROI: {results. roi:. 2%}")
+results = backtester.run_backtest(data, odds_data)
+print(f"ROI: {results.roi:.2%}")
 print(f"Win Rate: {results.win_rate:.2%}")
 ```
 

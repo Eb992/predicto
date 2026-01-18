@@ -19,7 +19,7 @@ class BaseScraper(ABC):
     """Classe base per tutti gli scraper."""
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper.
@@ -35,6 +35,8 @@ class BaseScraper(ABC):
         self.use_tor = use_tor
         self.tor_port = tor_port
         self._cache = {}
+        self.rate_limit = 3
+        self.max_delay = 5
 
         # Configura proxy
         if use_tor:
@@ -57,7 +59,7 @@ class FBrefScraper(BaseScraper):
     """Scraper per FBref utilizzando soccerdata con Tor."""
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper FBref.
@@ -74,9 +76,12 @@ class FBrefScraper(BaseScraper):
         for league in leagues:
             try:
                 # FBref usa requests, quindi passiamo il proxy
-                self.scrapers[league] = sd.FBref(
-                    leagues=league, seasons=seasons, proxy=self.proxy if use_tor else None
+                scraper = sd.FBref(
+                    leagues=league, seasons=seasons, proxy=self.proxy
                 )
+                scraper.rate_limit = self.rate_limit
+                scraper.max_delay = self.max_delay
+                self.scrapers[league] = scraper
                 logger.info(f"Inizializzato FBref scraper per {league}")
             except Exception as e:
                 logger.warning(f"Errore inizializzazione FBref per {league}: {e}")
@@ -192,7 +197,7 @@ class UnderstatScraper(BaseScraper):
     }
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper Understat.
@@ -209,11 +214,14 @@ class UnderstatScraper(BaseScraper):
         for league in leagues:
             if league in self.LEAGUE_MAPPING:
                 try:
-                    self.scrapers[league] = sd.Understat(
+                    scraper = sd.Understat(
                         leagues=self.LEAGUE_MAPPING[league],
                         seasons=seasons,
-                        proxy=self.proxy if use_tor else None,
+                        proxy=self.proxy,
                     )
+                    scraper.rate_limit = self.rate_limit
+                    scraper.max_delay = self.max_delay
+                    self.scrapers[league] = scraper
                     logger.info(f"Inizializzato Understat scraper per {league}")
                 except Exception as e:
                     logger.warning(f"Errore inizializzazione Understat per {league}: {e}")
@@ -266,7 +274,7 @@ class MatchHistoryScraper(BaseScraper):
     """Scraper per Football-Data. co.uk (quote storiche) con Tor."""
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper MatchHistory.
@@ -282,9 +290,12 @@ class MatchHistoryScraper(BaseScraper):
         self.scrapers = {}
         for league in leagues:
             try:
-                self.scrapers[league] = sd.MatchHistory(
-                    leagues=league, seasons=seasons, proxy=self.proxy if use_tor else None
+                scraper = sd.MatchHistory(
+                    leagues=league, seasons=seasons, proxy=self.proxy
                 )
+                scraper.rate_limit = self.rate_limit
+                scraper.max_delay = self.max_delay
+                self.scrapers[league] = scraper
                 logger.info(f"Inizializzato MatchHistory scraper per {league}")
             except Exception as e:
                 logger.warning(f"MatchHistory non disponibile per {league}:  {e}")
@@ -373,7 +384,7 @@ class WhoScoredScraper(BaseScraper):
         self,
         leagues: List[str],
         seasons: List[int],
-        use_tor: bool = True,
+        use_tor: bool,
         tor_port: int = 9150,
         headless: bool = True,
         path_to_browser: Optional[str] = None,
@@ -398,13 +409,16 @@ class WhoScoredScraper(BaseScraper):
         for league in leagues:
             try:
                 # WhoScored richiede Selenium
-                self.scrapers[league] = sd.WhoScored(
+                scraper = sd.WhoScored(
                     leagues=league,
                     seasons=seasons,
-                    proxy=self.proxy if use_tor else None,
+                    proxy=self.proxy,
                     headless=headless,
                     path_to_browser=path_to_browser,
                 )
+                scraper.rate_limit = self.rate_limit
+                scraper.max_delay = self.max_delay
+                self.scrapers[league] = scraper
                 logger.info(f"Inizializzato WhoScored scraper per {league}")
             except Exception as e:
                 logger.warning(f"Errore inizializzazione WhoScored per {league}: {e}")
@@ -451,7 +465,7 @@ class FotMobScraper(BaseScraper):
     """Scraper per FotMob con Tor."""
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper FotMob.
@@ -467,9 +481,12 @@ class FotMobScraper(BaseScraper):
         self.scrapers = {}
         for league in leagues:
             try:
-                self.scrapers[league] = sd.FotMob(
-                    leagues=league, seasons=seasons, proxy=self.proxy if use_tor else None
+                scraper = sd.FotMob(
+                    leagues=league, seasons=seasons, proxy=self.proxy
                 )
+                scraper.rate_limit = self.rate_limit
+                scraper.max_delay = self.max_delay
+                self.scrapers[league] = scraper
                 logger.info(f"Inizializzato FotMob scraper per {league}")
             except Exception as e:
                 logger.warning(f"Errore inizializzazione FotMob per {league}: {e}")
@@ -519,7 +536,7 @@ class SofascoreScraper(BaseScraper):
     """Scraper per Sofascore con Tor."""
 
     def __init__(
-        self, leagues: List[str], seasons: List[int], use_tor: bool = True, tor_port: int = 9150
+        self, leagues: List[str], seasons: List[int], use_tor: bool, tor_port: int = 9150
     ):
         """
         Inizializza lo scraper Sofascore.
@@ -535,9 +552,12 @@ class SofascoreScraper(BaseScraper):
         self.scrapers = {}
         for league in leagues:
             try:
-                self.scrapers[league] = sd.Sofascore(
-                    leagues=league, seasons=seasons, proxy=self.proxy if use_tor else None
+                scraper = sd.Sofascore(
+                    leagues=league, seasons=seasons, proxy=self.proxy
                 )
+                scraper.rate_limit = self.rate_limit
+                scraper.max_delay = self.max_delay
+                self.scrapers[league] = scraper
                 logger.info(f"Inizializzato Sofascore scraper per {league}")
             except Exception as e:
                 logger.warning(f"Errore inizializzazione Sofascore per {league}:  {e}")
@@ -564,7 +584,7 @@ def create_scraper(
     source: str,
     leagues: List[str],
     seasons: List[int],
-    use_tor: bool = True,
+    use_tor: bool,
     tor_port: int = 9150,
     **kwargs,
 ) -> BaseScraper:
