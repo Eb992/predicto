@@ -35,6 +35,8 @@ class BaseScraper(ABC):
         self.use_tor = use_tor
         self.tor_port = tor_port
         self._cache = {}
+        self.rate_limit = 3
+        self.max_delay = 5
 
         # Configura proxy
         if use_tor:
@@ -75,7 +77,7 @@ class FBrefScraper(BaseScraper):
             try:
                 # FBref usa requests, quindi passiamo il proxy
                 self.scrapers[league] = sd.FBref(
-                    leagues=league, seasons=seasons, proxy=self.proxy if use_tor else None
+                    leagues=league, seasons=seasons, proxy=self.proxy
                 )
                 logger.info(f"Inizializzato FBref scraper per {league}")
             except Exception as e:
@@ -212,7 +214,7 @@ class UnderstatScraper(BaseScraper):
                     self.scrapers[league] = sd.Understat(
                         leagues=self.LEAGUE_MAPPING[league],
                         seasons=seasons,
-                        proxy=self.proxy if use_tor else None,
+                        proxy=self.proxy,
                     )
                     logger.info(f"Inizializzato Understat scraper per {league}")
                 except Exception as e:
@@ -283,7 +285,7 @@ class MatchHistoryScraper(BaseScraper):
         for league in leagues:
             try:
                 self.scrapers[league] = sd.MatchHistory(
-                    leagues=league, seasons=seasons, proxy=self.proxy if use_tor else None
+                    leagues=league, seasons=seasons, proxy=self.proxy
                 )
                 logger.info(f"Inizializzato MatchHistory scraper per {league}")
             except Exception as e:
@@ -401,7 +403,7 @@ class WhoScoredScraper(BaseScraper):
                 self.scrapers[league] = sd.WhoScored(
                     leagues=league,
                     seasons=seasons,
-                    proxy=self.proxy if use_tor else None,
+                    proxy=self.proxy,
                     headless=headless,
                     path_to_browser=path_to_browser,
                 )
@@ -468,7 +470,7 @@ class FotMobScraper(BaseScraper):
         for league in leagues:
             try:
                 self.scrapers[league] = sd.FotMob(
-                    leagues=league, seasons=seasons, proxy=self.proxy if use_tor else None
+                    leagues=league, seasons=seasons, proxy=self.proxy
                 )
                 logger.info(f"Inizializzato FotMob scraper per {league}")
             except Exception as e:
@@ -536,7 +538,7 @@ class SofascoreScraper(BaseScraper):
         for league in leagues:
             try:
                 self.scrapers[league] = sd.Sofascore(
-                    leagues=league, seasons=seasons, proxy=self.proxy if use_tor else None
+                    leagues=league, seasons=seasons, proxy=self.proxy
                 )
                 logger.info(f"Inizializzato Sofascore scraper per {league}")
             except Exception as e:

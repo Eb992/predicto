@@ -111,7 +111,7 @@ class MatchProcessor:
 
         # Over/Under
         df['total_goals'] = df['home_goals'] + df['away_goals']
-        df['over_1. 5'] = df['total_goals'] > 1.5
+        df['over_1.5'] = df['total_goals'] > 1.5
         df['over_2.5'] = df['total_goals'] > 2.5
         df['over_3.5'] = df['total_goals'] > 3.5
 
